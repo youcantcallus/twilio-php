@@ -24,13 +24,14 @@
     OTHER DEALINGS IN THE SOFTWARE.
     */    
     
-    // VERSION: 2.0.7
+    // VERSION: 2.0.7.YCCU
+    // Modified by Youcantcall.us
     
     // Twilio REST Helpers
     // ========================================================================
     
     // ensure Curl is installed
-    if(!extension_loaded("curl"))
+    if(!extension_loaded("curl")) 
         throw(new Exception(
             "Curl extension is required for TwilioRestClient to work"));
     
@@ -43,6 +44,7 @@
      * Url and QueryString are from the request
      * HttpStatus is the response code of the request
      */
+
     class TwilioRestResponse {
         
         public $ResponseText;
@@ -70,8 +72,7 @@
                     (string)$this->ResponseXml->RestException->Message; 
               } 
             }
-        }
-        
+        }        
     }
     
     /* TwilioRestClient throws TwilioException on error 
@@ -290,6 +291,10 @@
         function addHangup(){
             return self::append(new Hangup());    
         }
+	
+	function addReject() {
+                return self::append(new Reject());
+        }
         
         function addRedirect($body=NULL, $attr = array()){
             return self::append(new Redirect($body, $attr));    
@@ -335,7 +340,7 @@
         private $xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><Response></Response>";
         
         protected $nesting = array('Say', 'Play', 'Gather', 'Record', 
-            'Dial', 'Redirect', 'Pause', 'Hangup', 'Sms');
+            'Dial', 'Redirect', 'Pause', 'Hangup', 'Reject', 'Sms');
         
         function __construct(){
             parent::__construct(NULL);
@@ -389,7 +394,7 @@
         function __construct($text='', $attr = array()) {
 			parent::__construct($text, $attr);
         }
-    }
+  	}
 	/**
 	* The <Reject> verb rejects an incoming call to your Twilio number without 
 	* billing you. This is very useful for blocking unwanted calls.
